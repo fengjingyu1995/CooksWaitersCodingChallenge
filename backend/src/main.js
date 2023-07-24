@@ -1,7 +1,11 @@
 import Fastify from 'fastify';
 import fastifyMongo from '@fastify/mongodb';
-import cooksData from './data/cooks.json';
-import waitersData from './data/waiters1.json';
+
+// import json files
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const cooksData = require('./data/cooks.json');
+const waitersData = require('./data/waiters1.json');
 
 const staffCollectionName = 'staff';
 
@@ -15,31 +19,44 @@ const fastify = Fastify({
   },
 });
 
-fastify.register(fastifyMongo, {
-  forceClose: true,
-  url: 'mongodb://localhost:27017',
-});
+fastify
+  .register(fastifyMongo, {
+    forceClose: true,
+    // using 'mongodb://localhost:27017' won't work properly
+    url: 'mongodb://127.0.0.1:27017',
+  })
+  // log error in case something goes wrong
+  .after((err) => {
+    console.log('after fastifyMongo');
+    if (err) {
+      fastify.log.error('Error during mongodb plugin registration:');
+      fastify.log.error(err);
+    }
+  });
 
-fastify.ready(async () => {
+fastify.ready(async function () {
   // create db
+  if (!fastify.mongo) {
+    fastify.log.error('mongodb is not available');
+    process.exit(1);
+  }
   const db = fastify.mongo.client.db('restaurant');
+  // drop the collection if exist and then create a new collection so that we can load data from json files every time we restart the server.
+  if (db.collection(staffCollectionName)) {
+    await db.dropCollection(staffCollectionName);
+  }
 
-  // drop the collection and then create a new collection so that we can load data from json files every time we restart the server.
-  db.dropCollection(staffCollectionName);
   const collection = db.collection(staffCollectionName);
-
   // create index so that "name" can be unique
   collection.createIndex({ name: 1 }, { unique: true });
-
   // load data from json files
   const cooksDocument = { name: 'cooks', data: cooksData };
   const waitersDocument = { name: 'waiters', data: waitersData };
-
   // insert docs to db
   collection.insertMany([cooksDocument, waitersDocument]);
 });
 
-fastify.get('/GetCooks', async (request, reply) => {
+fastify.get('/GetCooks', async function (request, reply) {
   const db = fastify.mongo.client.db('restaurant');
 
   const cooksDocument = await db
@@ -74,5 +91,14 @@ async function main() {
     process.exit(1);
   }
 }
+
+// Handle process termination (SIGINT and SIGTERM) and close the Fastify server before exiting.
+['SIGINT', 'SIGTERM'].forEach((signal) => {
+  process.on(signal, async () => {
+    await fastify.close();
+
+    process.exit(0);
+  });
+});
 
 main();
