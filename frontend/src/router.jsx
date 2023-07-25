@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import Cooks from './Cooks';
-import Waiters from './Waiters';
+import Cooks from './pages/Cooks';
+import Waiters from './pages/Waiters';
 
 const Router = () => {
   return (
