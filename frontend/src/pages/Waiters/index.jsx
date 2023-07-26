@@ -1,34 +1,29 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { DAYS } from '../../constants/constants';
 
-const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-
-const DATA = {
-  monday: ['Howard', 'Martin', 'Michael', 'Bert'],
-  tuesday: ['Roy', 'Herbert', 'Jacob', 'Tom', 'Elmer', 'Carl', 'Lee'],
-  wednesday: ['Peter', 'Benjamin', 'Frederick', 'Willie', 'Alfred', 'Sam'],
-  thursday: ['Will', 'Jesse', 'Oscar', 'Lewis'],
-  friday: [
-    'Herman',
-    'Jim',
-    'Francis',
-    'Harvey',
-    'Earl',
-    'Eugene',
-    'Ralph',
-    'Ed',
-  ],
-};
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Waiters = () => {
-  // TODO: fetch data from server
-  const [data, setData] = useState(DATA);
+  const [data, setData] = useState(null);
   // TODO: should be saved in app level using context
   const [currentDayIdx, setCurrentDayIdx] = useState(0);
 
-  const currentDay = DAYS[currentDayIdx];
+  // get data from api
+  useEffect(() => {
+    fetch(`${apiUrl}/GetWaiters`)
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  }, []);
+
   const waiters = useMemo(() => {
-    return data[DAYS[currentDayIdx]];
+    if (data) {
+      return data[DAYS[currentDayIdx]];
+    }
   }, [data, currentDayIdx]);
+
+  if (data == null) {
+    return <div>loading...</div>;
+  }
 
   const handlePrev = () => {
     if (currentDayIdx > 0) {
@@ -41,6 +36,8 @@ const Waiters = () => {
       setCurrentDayIdx(currentDayIdx + 1);
     }
   };
+
+  const currentDay = DAYS[currentDayIdx];
 
   return (
     <>
