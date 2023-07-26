@@ -8,7 +8,7 @@ const Nav = () => {
         <li className='flex items-center justify-center'>
           <Link
             to='/Waiters'
-            className={`h-full p-5 text-center hover:bg-white ${
+            className={`h-full p-5 text-center hover:bg-blue-800 ${
               pathname === '/Waiters' ? 'bg-white' : ''
             }`}
           >
@@ -18,7 +18,7 @@ const Nav = () => {
         <li className='flex items-center justify-center'>
           <Link
             to='/Cooks'
-            className={`h-full p-5 text-center hover:bg-white ${
+            className={`h-full p-5 text-center hover:bg-blue-800 ${
               pathname === '/Cooks' ? 'bg-white' : ''
             }`}
           >
