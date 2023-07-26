@@ -6,12 +6,14 @@ import { AppContextProvider } from './contexts/AppContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppContextProvider>
-        <Nav />
-        <Router />
-      </AppContextProvider>
-    </BrowserRouter>
+    <main className='h-screen overflow-auto bg-gray-100'>
+      <BrowserRouter>
+        <AppContextProvider>
+          <Nav />
+          <Router />
+        </AppContextProvider>
+      </BrowserRouter>
+    </main>
   );
 }
 

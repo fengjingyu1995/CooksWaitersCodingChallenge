@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useMemo } from 'react';
-import { DAYS } from '../constants/constants';
+import { DAYS, WAITERS, COOKS } from '../constants/staff.constant';
 import { AppContext } from '../contexts/AppContext';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -12,9 +12,9 @@ export const useWeekdayStaffData = (staffType) => {
   useEffect(() => {
     let urlEndpoint;
 
-    if (staffType === 'waiters') {
+    if (staffType === WAITERS) {
       urlEndpoint = 'GetWaiters';
-    } else if (staffType === 'cooks') {
+    } else if (staffType === COOKS) {
       urlEndpoint = 'GetCooks';
     }
     if (urlEndpoint) {
