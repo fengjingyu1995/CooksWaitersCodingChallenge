@@ -30,21 +30,21 @@ export const useStaffData = (staffType) => {
     }
   }, [data, currentDayIdx]);
 
-  const handlePrev = () => {
+  const handlePrevDay = () => {
     if (currentDayIdx > 0) {
       setCurrentDayIdx(currentDayIdx - 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNextDay = () => {
     if (currentDayIdx < DAYS.length - 1) {
       setCurrentDayIdx(currentDayIdx + 1);
     }
   };
   return {
     staffData,
-    handlePrev,
-    handleNext,
+    handlePrevDay,
+    handleNextDay,
     currentDay: DAYS[currentDayIdx],
     isPrevDisabled: currentDayIdx === 0,
     isNextDisabled: currentDayIdx === DAYS.length - 1,

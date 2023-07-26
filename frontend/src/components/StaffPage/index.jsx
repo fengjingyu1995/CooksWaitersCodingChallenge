@@ -7,8 +7,8 @@ const StaffPage = ({ staffType }) => {
   const {
     staffData,
     currentDay,
-    handlePrev,
-    handleNext,
+    handlePrevDay,
+    handleNextDay,
     isPrevDisabled,
     isNextDisabled,
   } = useStaffData(staffType);
@@ -26,10 +26,10 @@ const StaffPage = ({ staffType }) => {
       </h2>
       <StaffList staffData={staffData} />
       <div className='flex justify-between mx-5 '>
-        <Button onClickHandler={handlePrev} disabled={isPrevDisabled}>
+        <Button onClickHandler={handlePrevDay} disabled={isPrevDisabled}>
           Prev
         </Button>
-        <Button onClickHandler={handleNext} disabled={isNextDisabled}>
+        <Button onClickHandler={handleNextDay} disabled={isNextDisabled}>
           Next
         </Button>
       </div>
