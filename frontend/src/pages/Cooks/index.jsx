@@ -1,5 +1,7 @@
+import StaffPage from '../../components/StaffPage';
+
 const Cooks = () => {
-  return <div>Cooks</div>;
+  return <StaffPage staffType='cooks' />;
 };
 
 export default Cooks;
