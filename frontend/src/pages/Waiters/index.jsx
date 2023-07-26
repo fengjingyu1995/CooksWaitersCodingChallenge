@@ -30,22 +30,50 @@ const Waiters = () => {
     return data[DAYS[currentDayIdx]];
   }, [data, currentDayIdx]);
 
+  const handlePrev = () => {
+    if (currentDayIdx > 0) {
+      setCurrentDayIdx(currentDayIdx - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentDayIdx < DAYS.length - 1) {
+      setCurrentDayIdx(currentDayIdx + 1);
+    }
+  };
+
   return (
     <>
       <h1 className='p-5 text-2xl text-center'>Waiters</h1>
 
-      <h2>
+      <h2 className='p-2'>
         Current Day: <span className='capitalize'>{currentDay}</span>
       </h2>
-      <ul>
+      <ul className='flex flex-col items-center min-h-[60vh]'>
         {waiters.map((waiter) => (
           // Assuming waiter's name is unique
-          <li key={waiter}>{waiter}</li>
+          <li className='p-2' key={waiter}>
+            {waiter}
+          </li>
         ))}
       </ul>
 
-      <button className='p-3 m-2 bg-blue-400 '>prev</button>
-      <button className='p-3 m-2 bg-blue-400 '>next</button>
+      <div className='flex justify-between '>
+        <button
+          className='px-8 py-3 m-2 bg-blue-600 rounded disabled:opacity-25'
+          onClick={handlePrev}
+          disabled={currentDayIdx === 0}
+        >
+          prev
+        </button>
+        <button
+          className='px-8 py-3 m-2 bg-blue-600 rounded disabled:opacity-25'
+          onClick={handleNext}
+          disabled={currentDayIdx === DAYS.length - 1}
+        >
+          next
+        </button>
+      </div>
     </>
   );
 };
