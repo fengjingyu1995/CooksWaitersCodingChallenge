@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import fastifyMongo from '@fastify/mongodb';
+import cors from '@fastify/cors';
 
 // import json files
 import { createRequire } from 'node:module';
@@ -19,6 +20,8 @@ const fastify = Fastify({
   },
 });
 
+fastify.register(cors);
+
 fastify
   .register(fastifyMongo, {
     forceClose: true,
@@ -27,7 +30,6 @@ fastify
   })
   // log error in case something goes wrong
   .after((err) => {
-    console.log('after fastifyMongo');
     if (err) {
       fastify.log.error('Error during mongodb plugin registration:');
       fastify.log.error(err);
