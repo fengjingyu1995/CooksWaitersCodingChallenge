@@ -4,7 +4,7 @@ const StaffList = ({ staffData }) => {
   return (
     <ul className='flex flex-col items-center'>
       {staffData.map((waiter) => (
-        // Assuming waiter's name is unique
+        // Assuming waiter's name is unique, should use a better unique identifier
         <li className='p-2' key={waiter}>
           {waiter}
         </li>

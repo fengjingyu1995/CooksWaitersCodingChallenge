@@ -6,9 +6,11 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useWeekdayStaffData = (staffType) => {
   const [data, setData] = useState(null);
+
+  // "currentDayIdx" is set in app level, and shared across staff pages.
   const { currentDayIdx, setCurrentDayIdx } = useContext(AppContext);
 
-  // get data from api
+  // Fetching staff data from the API based on the selected staff type
   useEffect(() => {
     let urlEndpoint;
 
@@ -34,12 +36,14 @@ export const useWeekdayStaffData = (staffType) => {
     if (currentDayIdx > 0) {
       setCurrentDayIdx(currentDayIdx - 1);
     }
+    // Note: The "Prev Day" button should be disabled when currentDayIdx is 0 (Monday).
   };
 
   const handleNextDay = () => {
     if (currentDayIdx < DAYS.length - 1) {
       setCurrentDayIdx(currentDayIdx + 1);
     }
+    // Note: The "Next Day" button should be disabled when currentDayIdx is the last day (Friday).
   };
   return {
     staffData,

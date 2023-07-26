@@ -4,6 +4,8 @@ import Button from '../Button';
 import Loading from '../Loading';
 import StaffList from '../StaffList';
 
+// staffType should be one of "waiters" and "cooks"
+
 const StaffPage = ({ staffType }) => {
   const {
     staffData,
