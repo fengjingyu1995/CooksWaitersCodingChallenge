@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useStaffData } from '../../hooks/useStaffData';
+import { useWeekdayStaffData } from '../../hooks/useWeekdayStaffData';
 import Button from '../Button';
 import StaffList from '../StaffList';
 
@@ -11,7 +11,7 @@ const StaffPage = ({ staffType }) => {
     handleNextDay,
     isPrevDisabled,
     isNextDisabled,
-  } = useStaffData(staffType);
+  } = useWeekdayStaffData(staffType);
 
   if (staffData == null) {
     return <div>loading...</div>;

@@ -4,7 +4,7 @@ import { AppContext } from '../contexts/AppContext';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const useStaffData = (staffType) => {
+export const useWeekdayStaffData = (staffType) => {
   const [data, setData] = useState(null);
   const { currentDayIdx, setCurrentDayIdx } = useContext(AppContext);
 
