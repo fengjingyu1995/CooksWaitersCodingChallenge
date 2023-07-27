@@ -1,14 +1,9 @@
 import Fastify from 'fastify';
 import fastifyMongo from '@fastify/mongodb';
 import cors from '@fastify/cors';
-
-// import json files
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const cooksData = require('./data/cooks.json');
-const waitersData = require('./data/waiters1.json');
-
-const staffCollectionName = 'staff';
+import cooksRouter from './routers/cooksRouter.js';
+import waitersRouter from './routers/waitersRouter.js';
+import loadDataToDb from './database/loadDataToDb.js';
 
 const fastify = Fastify({
   logger: {
@@ -38,52 +33,16 @@ fastify
 
 fastify.ready(async function () {
   // create db
-  if (!fastify.mongo) {
+  const mongo = fastify.mongo;
+  if (!mongo) {
     fastify.log.error('mongodb is not available');
     process.exit(1);
   }
-  const db = fastify.mongo.client.db('restaurant');
-  // drop the collection if exist and then create a new collection so that we can load data from json files every time we restart the server.
-  if (db.collection(staffCollectionName)) {
-    await db.dropCollection(staffCollectionName);
-  }
-
-  const collection = db.collection(staffCollectionName);
-  // create index so that "name" can be unique
-  collection.createIndex({ name: 1 }, { unique: true });
-  // load data from json files
-  const cooksDocument = { name: 'cooks', data: cooksData };
-  const waitersDocument = { name: 'waiters', data: waitersData };
-  // insert docs to db
-  collection.insertMany([cooksDocument, waitersDocument]);
+  await loadDataToDb(mongo.client);
 });
 
-fastify.get('/GetCooks', async function (request, reply) {
-  const db = fastify.mongo.client.db('restaurant');
-
-  const cooksDocument = await db
-    .collection(staffCollectionName)
-    .findOne({ name: 'cooks' });
-
-  if (!cooksDocument) {
-    // If no document is found, return a 404 Not Found response
-    return reply.code(404).send({ message: 'Cooks not found' });
-  }
-  return reply.send(cooksDocument.data);
-});
-
-fastify.get('/GetWaiters', async (request, reply) => {
-  const db = fastify.mongo.client.db('restaurant');
-  const waitersDocument = await db
-    .collection(staffCollectionName)
-    .findOne({ name: 'waiters' });
-
-  if (!waitersDocument) {
-    // If no document is found, return a 404 Not Found response
-    return reply.code(404).send({ message: 'waiters not found' });
-  }
-  return reply.send(waitersDocument.data);
-});
+fastify.register(cooksRouter);
+fastify.register(waitersRouter);
 
 async function main() {
   try {
