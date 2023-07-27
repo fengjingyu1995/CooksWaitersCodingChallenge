@@ -1,3 +1,7 @@
+## Environment
+
+Node.js version: v18.17.0
+
 ## Install
 
 ### MongoDB
