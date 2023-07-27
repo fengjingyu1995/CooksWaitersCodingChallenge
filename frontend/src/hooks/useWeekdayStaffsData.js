@@ -2,7 +2,7 @@ import { useContext, useMemo } from 'react';
 import { DAYS } from '../constants/staff.constant';
 import { AppContext } from '../contexts/AppContext';
 
-export const useWeekdayStaffsData = (StaffsData) => {
+const useWeekdayStaffsData = (StaffsData) => {
   // "currentDayIdx" is set in app level, and shared across staff pages.
   const { currentDayIdx, setCurrentDayIdx } = useContext(AppContext);
 
@@ -34,3 +34,5 @@ export const useWeekdayStaffsData = (StaffsData) => {
     isNextDisabled: currentDayIdx === DAYS.length - 1,
   };
 };
+
+export default useWeekdayStaffsData;
