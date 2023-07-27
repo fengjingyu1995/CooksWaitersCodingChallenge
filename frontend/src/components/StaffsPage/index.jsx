@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useWeekdayStaffsData } from '../../hooks/useWeekdayStaffsData';
+import useCurrentDayStaffsData from '../../hooks/useCurrentDayStaffsData';
 import Button from '../Button';
 import Loading from '../Loading';
 import StaffList from '../StaffList';
@@ -8,15 +8,15 @@ import StaffList from '../StaffList';
 
 const StaffsPage = ({ staffsType, StaffsData }) => {
   const {
-    weekdayStaffsData,
+    currentDayStaffsData,
     currentDay,
     handlePrevDay,
     handleNextDay,
     isPrevDisabled,
     isNextDisabled,
-  } = useWeekdayStaffsData(StaffsData);
+  } = useCurrentDayStaffsData(StaffsData);
 
-  if (weekdayStaffsData == null) {
+  if (currentDayStaffsData == null) {
     return <Loading />;
   }
 
@@ -38,7 +38,7 @@ const StaffsPage = ({ staffsType, StaffsData }) => {
       <h2 className='px-2 py-4 text-xl text-center'>
         Current Day: <span className='capitalize'>{currentDay}</span>
       </h2>
-      <StaffList weekdayStaffsData={weekdayStaffsData} />
+      <StaffList currentDayStaffsData={currentDayStaffsData} />
     </div>
   );
 };

@@ -2,11 +2,11 @@ import { useContext, useMemo } from 'react';
 import { DAYS } from '../constants/staff.constant';
 import { AppContext } from '../contexts/AppContext';
 
-const useWeekdayStaffsData = (StaffsData) => {
+const useCurrentDayStaffsData = (StaffsData) => {
   // "currentDayIdx" is set in app level, and shared across staff pages.
   const { currentDayIdx, setCurrentDayIdx } = useContext(AppContext);
 
-  const weekdayStaffsData = useMemo(() => {
+  const currentDayStaffsData = useMemo(() => {
     if (StaffsData) {
       return StaffsData[DAYS[currentDayIdx]];
     }
@@ -26,7 +26,7 @@ const useWeekdayStaffsData = (StaffsData) => {
     // Note: The "Next Day" button should be disabled when currentDayIdx is the last day (Friday).
   };
   return {
-    weekdayStaffsData,
+    currentDayStaffsData,
     handlePrevDay,
     handleNextDay,
     currentDay: DAYS[currentDayIdx],
@@ -35,4 +35,4 @@ const useWeekdayStaffsData = (StaffsData) => {
   };
 };
 
-export default useWeekdayStaffsData;
+export default useCurrentDayStaffsData;

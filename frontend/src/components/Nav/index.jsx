@@ -9,10 +9,10 @@ const Nav = () => {
         <li className='flex items-center justify-center'>
           <Link
             to={ROUTES.WAITERS.path}
-            className={`h-full p-5 text-center text-white ${
+            className={`h-full p-5 text-center  ${
               pathname === ROUTES.WAITERS.path
                 ? 'bg-gray-100 text-black'
-                : 'hover:bg-blue-800'
+                : 'hover:bg-blue-800 text-white'
             }`}
           >
             Waiters
@@ -21,10 +21,10 @@ const Nav = () => {
         <li className='flex items-center justify-center'>
           <Link
             to={ROUTES.COOKS.path}
-            className={`h-full p-5 text-center text-white  ${
+            className={`h-full p-5 text-center ${
               pathname === ROUTES.COOKS.path
                 ? 'bg-gray-100 text-black'
-                : 'hover:bg-blue-800'
+                : 'hover:bg-blue-800 text-white'
             }`}
           >
             Cooks

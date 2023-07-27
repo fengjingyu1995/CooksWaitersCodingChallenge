@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
-import useWeekdayStaffsData from './useWeekdayStaffsData';
+import useCurrentDayStaffsData from './useCurrentDayStaffsData';
 import { AppContextProvider } from '../contexts/AppContext';
 import { describe, it, expect } from 'vitest';
 
-describe('useWeekdayStaffsData', () => {
+describe('useCurrentDayStaffsData', () => {
   // Mock the context provider for the tests
   const wrapper = ({ children }) => (
     <AppContextProvider>{children}</AppContextProvider>
@@ -19,35 +19,44 @@ describe('useWeekdayStaffsData', () => {
   };
 
   it('should return the correct initial state', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.monday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.monday);
     expect(result.current.currentDay).toEqual('monday');
     expect(result.current.isPrevDisabled).toBe(true);
     expect(result.current.isNextDisabled).toBe(false);
   });
 
   it('should switch to the next day correctly', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
     act(() => {
       result.current.handleNextDay();
     });
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.tuesday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.tuesday);
     expect(result.current.currentDay).toEqual('tuesday');
     expect(result.current.isPrevDisabled).toBe(false);
     expect(result.current.isNextDisabled).toBe(false);
   });
 
   it('should switch to the previous day correctly', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
     // Switch to Tuesday first
     act(() => {
@@ -59,16 +68,19 @@ describe('useWeekdayStaffsData', () => {
       result.current.handlePrevDay();
     });
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.monday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.monday);
     expect(result.current.currentDay).toEqual('monday');
     expect(result.current.isPrevDisabled).toBe(true);
     expect(result.current.isNextDisabled).toBe(false);
   });
 
   it('should disable "Next Day" button on Friday', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
     // Switch to Friday
     [...Array(4)].forEach(() => {
@@ -77,31 +89,37 @@ describe('useWeekdayStaffsData', () => {
       });
     });
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.friday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.friday);
     expect(result.current.currentDay).toEqual('friday');
     expect(result.current.isPrevDisabled).toBe(false);
     expect(result.current.isNextDisabled).toBe(true);
   });
 
   it('should not go previous day if isPrevDisabled is true', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
     act(() => {
       result.current.handlePrevDay();
     });
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.monday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.monday);
     expect(result.current.currentDay).toEqual('monday');
     expect(result.current.isPrevDisabled).toBe(true);
     expect(result.current.isNextDisabled).toBe(false);
   });
 
   it('should not go previous day if isPrevDisabled is true', () => {
-    const { result } = renderHook(() => useWeekdayStaffsData(mockStaffsData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCurrentDayStaffsData(mockStaffsData),
+      {
+        wrapper,
+      }
+    );
 
     // Switch to Friday first
     [...Array(4)].forEach(() => {
@@ -114,7 +132,7 @@ describe('useWeekdayStaffsData', () => {
       result.current.handleNextDay();
     });
 
-    expect(result.current.weekdayStaffsData).toEqual(mockStaffsData.friday);
+    expect(result.current.currentDayStaffsData).toEqual(mockStaffsData.friday);
     expect(result.current.currentDay).toEqual('friday');
     expect(result.current.isPrevDisabled).toBe(false);
     expect(result.current.isNextDisabled).toBe(true);
